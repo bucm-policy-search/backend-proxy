@@ -1,0 +1,45 @@
+Arguments: 
+  /home/hijacker/.nvm/versions/node/v14.16.1/bin/node /usr/local/bin/yarn main
+
+PATH: 
+  /home/hijacker/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin:/home/hijacker/.local/bin:/home/hijacker/.nvm/versions/node/v14.16.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/tools/ruby30/bin:/mnt/c/Users/hijacker/AppData/Local/Programs/Python/Python39/Scripts/:/mnt/c/Users/hijacker/AppData/Local/Programs/Python/Python39/:/mnt/c/Program Files (x86)/VMware/VMware Workstation/bin/:/mnt/c/tools/ruby27/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/dotnet/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/tools/BCURRAN3:/mnt/c/Program Files/Calibre2/:/mnt/c/Program Files/Java/jdk1.8.0_211/bin:/mnt/c/Program Files/MiKTeX/miktex/bin/x64/:/mnt/c/ProgramData/chocolatey/lib/mpv.install/tools:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Program Files (x86)/Yarn/bin/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/tools/flutter/bin:/mnt/c/Program Files/Android/Android Studio/bin:/mnt/c/Program Files (x86)/GnuPG/bin:/mnt/c/Program Files/nodejs/:/mnt/c/tools/platform-tools:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files/OpenJDK/openjdk-8u292-b10/bin:/mnt/c/Program Files (x86)/PDFtk Server/bin/:/mnt/c/Users/hijacker/AppData/Local/Programs/Python/Python39/Scripts/:/mnt/c/Users/hijacker/AppData/Local/Programs/Python/Python39/:/mnt/c/Users/hijacker/AppData/Local/Programs/Python/Launcher/:/mnt/c/tools/ruby27/bin:/mnt/c/Python27/:/mnt/c/Python27/Scripts:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/dotnet/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/tools/BCURRAN3:/mnt/c/Program Files/Calibre2/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Java/jdk1.8.0_211/bin:/mnt/c/Program Files/MiKTeX/miktex/bin/x64/:/mnt/c/ProgramData/chocolatey/lib/mpv.install/tools:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Microsoft VS Code/bin:/mnt/c/Program Files (x86)/Yarn/bin/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files/OpenJDK/openjdk-8u275-b01/bin:/mnt/c/Users/hijacker/AppData/Local/Microsoft/WindowsApps:/mnt/c/tools/Cmder:/mnt/c/tools/msys64:/mnt/c/Users/hijacker/AppData/Local/Yarn/bin:/mnt/c/Users/hijacker/AppData/Local/Programs/Fiddler:/mnt/c/Program Files/JetBrains/IntelliJ IDEA 2020.3/bin:/mnt/c/Program Files/JetBrains/PyCharm 2020.3/bin:/mnt/c/Users/hijacker/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/hijacker/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/tools/flutter/bin:/mnt/c/Program Files/Android/Android Studio/bin:/mnt/c/Users/hijacker/AppData/Roaming/npm:/mnt/c/tools/platform-tools:/mnt/c/Program Files/JetBrains/CLion 2021.1/bin:/snap/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.16.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/hijacker/search-engine/backend-proxy/package.json: Unexpected token / in JSON at position 131
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "backend-proxy",
+    "version": "1.0.0",
+    "description": "build proxy for elasticsearch",
+    "main": "proxy/proxy.js",
+    // "scripts": {
+    //   "start": "node start",
+    //   "build": "react-scripts build",
+    //   "test": "react-scripts test",
+    //   "eject": "react-scripts eject"
+    // },
+    "repository": "https://github.com/bucm-policy-search/backend-proxy",
+    "author": "gricn",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

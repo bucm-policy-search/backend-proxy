@@ -1,0 +1,17 @@
+{
+  "name": "backend-proxy",
+  "version": "1.0.0",
+  "description": "build proxy for elasticsearch",
+  "main": "proxy/proxy.js",
+  "scripts": {
+    "start": "node proxy/proxy",
+    "dev": "nodemon proxy/proxy"
+  },
+  "repository": "https://github.com/bucm-policy-search/backend-proxy",
+  "author": "gricn",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
