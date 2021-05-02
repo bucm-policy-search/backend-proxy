@@ -1,12 +1,11 @@
 'use strict'
 
 const express = require('express')
+const app = express()
 require('dotenv').config()
 const { Client } = require('@elastic/elasticsearch')
 
-const app = express()
 const port = Number(process.env.PROXY_PORT || 3200)
-
 
 const client = new Client({
   node: process.env.ELASTIC_URL,
@@ -17,31 +16,39 @@ const client = new Client({
 
 })
 
-app.get('/api/search/', async (req, res) => {
-  console.log(req)
-  // let req = req
-  let searchContent = req.query.q || ''
-  let result = ''
-  async function run() {
-    const { body } = await client.search({
-      index: 'test',
-      body: {
-        query: {
-          match: {
-            title: searchContent
+app.get('/api/search', async (req, res) => {
+  try {
+    let body = {}
+    let searchContent = req.query.q || ''
+    async function run() {
+      const {body} = await client.search({
+        index: 'test',
+        body: {
+          query: {
+            match: {
+              title: searchContent
+            }
           }
         }
-      }
+      })
+      console.log(body.hits.hits)
+      return body
+    }
+    run()
+    .then(body=>{
+      res.set({
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
+        })
+      res.send(body.hits.hits)
     })
-    result = body.hits.hits
-    return result
+    
+    
+  } catch (e) {
+    // res.sendStatus(500)
+    console.log(e)
   }
-  run()
-    .then(e=>{
-      console.log(e)
-    })
-    .catch(console.log)
-  res.send(result)
 })
 
 app.listen(port)
