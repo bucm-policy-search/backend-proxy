@@ -17,19 +17,19 @@ const client = new Client({
 
 app.get('/api/search', async (req, res) => {
   try {
-    let searchContent = req.query.q || ''
+    let { q } = req.query || ''
     async function run() {
       const { body } = await client.search({
         index: 'test',
         body: {
           query: {
             match: {
-              title: searchContent
+              title: q
             }
           }
         }
       })
-   
+
       return body
     }
     run()
@@ -44,7 +44,6 @@ app.get('/api/search', async (req, res) => {
 
 
   } catch (e) {
-    // res.sendStatus(500)
     console.log(e)
   }
 })
