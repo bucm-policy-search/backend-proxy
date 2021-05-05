@@ -24,12 +24,23 @@ app.get('/api/search', async (req, res) => {
         index: 'test',
         body: {
           query: {
-            match_phrase: {
-              title: q
+            "bool": {
+              "must": {
+                "match_phrase": {
+                    "article": q
+                }
+              },
+              "should": {
+                  "match_phrase": {
+                    "title": q
+                  }
+                }
             }
           },
           from: (page - 1) * 10,
           highlight: {
+            "pre_tags": ["<span style='color:red'>"],
+            "post_tags": ["</span>"],
             fields: {
               article: {}
             }
@@ -63,7 +74,7 @@ app.get('/api/article', async (req, res) => {
         index: 'test',
         body: {
           query: {
-            bool : {
+            bool: {
               must: {
                 // must use "match_phrase" instead of "match" or it will cause 
                 // "Uncaught TypeError: First argument must be a string" in some pages.
