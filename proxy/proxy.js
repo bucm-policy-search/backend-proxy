@@ -23,8 +23,56 @@ app.get('/api/search', async (req, res) => {
         index: 'test',
         body: {
           query: {
+            match_phrase: {
+              title: q
+            }
+          },
+          highlight: {
+            fields:{
+              article:{}
+            }
+          }
+        }
+      })
+
+      return body
+    }
+    run()
+      .then(body => {
+        res.set({
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
+        })
+        res.send(body)
+      })
+
+
+  } catch (e) {
+    console.log(e)
+  }
+})
+
+app.get('/api/article', async (req, res) => {
+  try {
+    let { q } = req.query || ''
+    async function run() {
+      const { body } = await client.search({
+        index: 'test',
+        body: {
+          query: {
             match: {
               title: q
+            }
+          },
+          from: 1,
+          size: 10,
+          collapse:{
+            field
+          },
+          highlight: {
+            fields:{
+              article:{}
             }
           }
         }
