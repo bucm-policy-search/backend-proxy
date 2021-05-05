@@ -17,8 +17,9 @@ const client = new Client({
 
 app.get('/api/search', async (req, res) => {
   try {
-    let { q } = req.query || ''
+    let { q, page } = req.query || ''
     async function run() {
+
       const { body } = await client.search({
         index: 'test',
         body: {
@@ -27,14 +28,14 @@ app.get('/api/search', async (req, res) => {
               title: q
             }
           },
+          from: (page - 1) * 10,
           highlight: {
-            fields:{
-              article:{}
+            fields: {
+              article: {}
             }
           }
         }
       })
-
       return body
     }
     run()
@@ -45,9 +46,9 @@ app.get('/api/search', async (req, res) => {
           "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
         })
         res.send(body)
+      }).catch(e => {
+        console.log("CORS error:" + e)
       })
-
-
   } catch (e) {
     console.log(e)
   }
@@ -56,30 +57,27 @@ app.get('/api/search', async (req, res) => {
 app.get('/api/article', async (req, res) => {
   try {
     let { q } = req.query || ''
+    console.log(`query data = ${q}`)
     async function run() {
       const { body } = await client.search({
         index: 'test',
         body: {
           query: {
-            match: {
-              title: q
-            }
-          },
-          from: 1,
-          size: 10,
-          collapse:{
-            field
-          },
-          highlight: {
-            fields:{
-              article:{}
+            bool : {
+              must: {
+                // must use "match_phrase" instead of "match" or it will cause 
+                // "Uncaught TypeError: First argument must be a string" in some pages.
+                match_phrase: {
+                  title: q
+                }
+              }
             }
           }
         }
       })
-
       return body
     }
+
     run()
       .then(body => {
         res.set({
@@ -88,9 +86,9 @@ app.get('/api/article', async (req, res) => {
           "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
         })
         res.send(body)
+      }).catch(e => {
+        console.log("CORS error:" + e)
       })
-
-
   } catch (e) {
     console.log(e)
   }
