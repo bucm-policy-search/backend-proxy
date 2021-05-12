@@ -18,23 +18,19 @@ const client = new Client({
 app.get('/api/search', async (req, res) => {
   try {
     let { q, page } = req.query || ''
-    async function run() {
 
+    console.log("search item:" + q)
+
+    async function run() {
       const { body } = await client.search({
         index: 'test',
         body: {
           query: {
-            "bool": {
-              "must": {
-                "match_phrase": {
-                    "article": q
-                }
-              },
-              "should": {
-                  "match_phrase": {
-                    "title": q
-                  }
-                }
+            "multi_match": {
+              "query": q,
+              "type": "best_fields",
+              "fields": ["title^5", "article"],
+              "operator": "and"
             }
           },
           from: (page - 1) * 10,
@@ -53,12 +49,12 @@ app.get('/api/search', async (req, res) => {
       .then(body => {
         res.set({
           "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE",
+          "Access-Control-Allow-Methods": "GET, POST",
           "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
         })
         res.send(body)
       }).catch(e => {
-        console.log("CORS error:" + e)
+        console.log("Error:" + e)
       })
   } catch (e) {
     console.log(e)
@@ -93,7 +89,7 @@ app.get('/api/article', async (req, res) => {
       .then(body => {
         res.set({
           "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE",
+          "Access-Control-Allow-Methods": "GET, POST",
           "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
         })
         res.send(body)
