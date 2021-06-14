@@ -29,8 +29,8 @@ app.get('/api/search', async (req, res) => {
             "multi_match": {
               "query": q,
               "type": "best_fields",
-              "fields": ["title^5", "article"],
-              "operator": "and"
+              "fields": ["title^5", "plaintext"],
+              "operator": "or"
             }
           },
           from: (page - 1) * 10,
@@ -38,7 +38,7 @@ app.get('/api/search', async (req, res) => {
             "pre_tags": ["<span style='color:red'>"],
             "post_tags": ["</span>"],
             fields: {
-              article: {}
+              plaintext: {}
             }
           }
         }
@@ -49,7 +49,7 @@ app.get('/api/search', async (req, res) => {
       .then(body => {
         res.set({
           "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET, POST",
+          "Access-Control-Allow-Methods": "GET",
           "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
         })
         res.send(body)
@@ -89,7 +89,7 @@ app.get('/api/article', async (req, res) => {
       .then(body => {
         res.set({
           "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET, POST",
+          "Access-Control-Allow-Methods": "GET",
           "Access-Control-Allow-Headers": "Content-Type, x-requested-with"
         })
         res.send(body)
