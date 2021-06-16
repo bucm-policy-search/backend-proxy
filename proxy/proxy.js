@@ -70,13 +70,9 @@ app.get('/api/article', async (req, res) => {
         index: 'test',
         body: {
           query: {
-            bool: {
-              must: {
-                // must use "match_phrase" instead of "match" or it will cause 
-                // "Uncaught TypeError: First argument must be a string" in some pages.
-                match_phrase: {
-                  title: q
-                }
+            term: {
+              "title.keyword":{
+                value: q
               }
             }
           }
