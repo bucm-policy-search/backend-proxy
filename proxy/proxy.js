@@ -23,7 +23,7 @@ app.get('/api/search', async (req, res) => {
 
     async function run() {
       const { body } = await client.search({
-        index: 'test',
+        index: 'policy',
         body: {
           query: {
             "multi_match": {
@@ -67,7 +67,7 @@ app.get('/api/article', async (req, res) => {
     console.log(`query data = ${q}`)
     async function run() {
       const { body } = await client.search({
-        index: 'test',
+        index: 'policy',
         body: {
           query: {
             term: {
