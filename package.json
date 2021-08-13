@@ -4,15 +4,15 @@
   "description": "build proxy for elasticsearch",
   "main": "proxy/proxy.js",
   "scripts": {
-    "start": "node proxy/proxy",
-    "dev": "nodemon proxy/proxy"
+    "start": "node proxy",
+    "dev": "nodemon proxy"
   },
   "repository": "https://github.com/bucm-policy-search/backend-proxy",
   "author": "gricn",
   "license": "MIT",
   "dependencies": {
     "@elastic/elasticsearch": "7.14.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "nodemon": "^2.0.7"
   }
