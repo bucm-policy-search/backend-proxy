@@ -125,26 +125,6 @@ app.get('/api/advanced_search', async (req, res) => {
           }
         })
       }
-      if (containAttachment === "yes") {
-        must.push({
-          "filter": {
-            "script": {
-              "script": "doc['attachment.link.keyword'].length > 0",
-              "lang": "painless"
-            }
-          }
-        })
-      }
-      if (containAttachment === "no") {
-        must.push({
-          "filter": {
-            "script": {
-              "script": "doc['attachment.link.keyword'].length == 0",
-              "lang": "painless"
-            }
-          }
-        })
-      }
     }
 
     if (exclude) {
@@ -160,6 +140,27 @@ app.get('/api/advanced_search', async (req, res) => {
           ]
         }
       })
+    }
+
+    if (containAttachment === "yes") {
+      queryContent.bool.filter = {
+        "script": {
+          "script": {
+            "source": "doc['attachment.link.keyword'].length == 0",
+            "lang": "painless"
+          }
+        }
+
+      }
+    } else if (containAttachment === "no") {
+      queryContent.bool.filter = {
+        "script": {
+          "script": {
+            "source": "doc['attachment.link.keyword'].length == 0",
+            "lang": "painless"
+          }
+        }
+      }
     }
 
     if (q) {
