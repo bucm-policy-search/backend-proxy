@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const { Client } = require('@elastic/elasticsearch')
+const { query } = require('express')
 
 const port = Number(process.env.PROXY_PORT || 3200)
 
@@ -65,15 +66,26 @@ app.get('/api/search', async (req, res) => {
 })
 
 app.get('/api/advanced_search', async (req, res) => {
+  console.log("req.query")
+  console.log(req.query)
+
   try {
     let { q, page, include, exclude, publishingDate1, publishingDate2, scrapyDate1, scrapyDate2, infoSource, containAttachment } = req.query || ''
 
-    if (include || publishingDate1 || publishingDate2 || scrapyDate1 || scrapyDate2 || infoSource || (containAttachment === "yes")) {
 
+    const queryContent = {
+      "bool": {}
+    }
+
+
+    let must, must_not, should = []
+
+    if (include || publishingDate1 || publishingDate2 || scrapyDate1 || scrapyDate2 || infoSource || (containAttachment === "yes")) {
       queryContent.bool.must = []
-      const must = queryContent.bool.must
+      must = queryContent.bool.must
+
       if (include) {
-        must.append({
+        must.push({
           "multi_match": {
             "query": include,
             "type": "cross_fields",
@@ -85,34 +97,36 @@ app.get('/api/advanced_search', async (req, res) => {
         })
       }
       if (publishingDate1 || publishingDate2) {
-        must.append({
+        console.log('publishingDate Trigger!')
+        console.log(`publishingDate: ${publishingDate1} - ${publishingDate2}`)
+        must.push({
           "range": {
             "publishingDate": {
               "gte": publishingDate1 || "1788-01-01",
-              "lt": publishingDate2 || "now"
+              "lte": publishingDate2 || "now"
             }
           }
         })
       }
       if (scrapyDate1 || scrapyDate2) {
-        must.append({
+        must.push({
           "range": {
             "scrapyDate": {
               "gte": scrapyDate1 || "1788-01-01",
-              "lt": scrapyDate2 || "now"
+              "lte": scrapyDate2 || "now"
             }
           }
         })
       }
       if (infoSource) {
-        must.append({
+        must.push({
           "match_bool_prefix": {
             "source": infoSource
           }
         })
       }
       if (containAttachment === "yes") {
-        must.append({
+        must.push({
           "filter": {
             "script": {
               "script": "doc['attachment.link.keyword'].length > 0",
@@ -121,35 +135,55 @@ app.get('/api/advanced_search', async (req, res) => {
           }
         })
       }
-    }
-
-    const queryContent = {
-      "bool": {
-        "must_not": {
-          "multi_match": {
-            "query": exclude,
-            "type": "most_fields",
-            "fields": [
-              "title",
-              "plaintext"
-            ]
-          }
-        },
-        "should": [
-          {
-            "multi_match": {
-              "query": q,
-              "type": "best_fields",
-              "fields": [
-                "title^5",
-                "plaintext"
-              ],
-              "operator": "or"
+      if (containAttachment === "no") {
+        must.push({
+          "filter": {
+            "script": {
+              "script": "doc['attachment.link.keyword'].length == 0",
+              "lang": "painless"
             }
           }
-        ]
+        })
       }
     }
+
+    if (exclude) {
+      queryContent.bool.must_not = []
+      must_not = queryContent.bool.must_not
+      must_not.push({
+        "multi_match": {
+          "query": exclude,
+          "type": "most_fields",
+          "fields": [
+            "title",
+            "plaintext"
+          ]
+        }
+      })
+    }
+
+    if (q) {
+      queryContent.bool.should = []
+      should = queryContent.bool.should
+      should.push({
+        "multi_match": {
+          "query": q,
+          "type": "best_fields",
+          "fields": [
+            "title^2",
+            "plaintext"
+          ],
+          "operator": "or"
+        }
+      })
+    }
+
+
+    console.log("queryContent:")
+    console.log(queryContent)
+
+    console.log("must:" + "\n")
+    console.log(must)
 
     async function run() {
       const { body } = await client.search({
