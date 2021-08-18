@@ -20,12 +20,6 @@ app.get('/api/search', async (req, res) => {
   try {
     let { q, page } = req.query || ''
 
-    console.log("search item:" + q)
-
-    // TODO-1 解决ik_smart无法识别单字问题。如“北京”无法获得“北”搜索结果
-    // TODO-2 解决ik_max_words未按单字分解的搜索问题。如“美国利特”无法获得“美”和“国”两个字搜索结果
-    // TODO-3 解决数字和字母混合时不在ik_max_words中的情况。如“7号电池”无法获得“7号”搜索结果
-
     async function run() {
       const { body } = await client.search({
         index: 'policy',
@@ -33,7 +27,7 @@ app.get('/api/search', async (req, res) => {
           query: {
             "multi_match": {
               "query": q,
-              "type": "most_fields",
+              "type": "bool_prefix",
               "fields": ["title^2", "plaintext"]
             }
           },
@@ -88,7 +82,7 @@ app.get('/api/advanced_search', async (req, res) => {
         must.push({
           "multi_match": {
             "query": include,
-            "type": "cross_fields",
+            "type": "bool_prefix",
             "fields": [
               "title",
               "plaintext"
@@ -146,7 +140,7 @@ app.get('/api/advanced_search', async (req, res) => {
       queryContent.bool.filter = {
         "script": {
           "script": {
-            "source": "doc['attachment.link.keyword'].length == 0",
+            "source": "doc['attachment.link.keyword'].length > 0",
             "lang": "painless"
           }
         }
@@ -169,7 +163,7 @@ app.get('/api/advanced_search', async (req, res) => {
       should.push({
         "multi_match": {
           "query": q,
-          "type": "best_fields",
+          "type": "bool_prefix",
           "fields": [
             "title^2",
             "plaintext"
