@@ -1,4 +1,26 @@
-## api
+## 使用说明
+
+1. 要正常使用该仓库，需
+  - 自创证书或者将 Docker仓库中的ES证书复制出来
+如：使用docker compose命令 
+    ```
+    docker compose cp es01:/usr/share/elasticsearch/config/certs ./certs
+    ```
+    需注意的是，为了向前兼容，这里我使用了Docker Compose CLI V2，如果V1不支持cp操作，可以用Docker其他命令代替 
+
+    在文件夹找到`.ca`文件，并将该文件复制到此仓库中。并记下该文件相对仓库主目录路径。
+  - 在仓库根目录创建`.env`文件并至设置以下内容
+    ```
+    # Required params:
+    ES_USERNAME="CHANGEME" # default to "elastic"
+    ES_PASSWORD="CHANGEME"
+    CA_CERT="ca.crt"
+
+    # Optional params:
+    # ES_PORT="9200"
+    # PROXY_PORT="3200"
+    ```
+## API部分
 
 ### /search?q=xxx
 
@@ -51,3 +73,6 @@ res.set({
 查询文章标题中的关键词
 
 设定res响应HTTP头
+
+## Looking Forward
+之后我会将四个仓库合并，用Docker Command完成所有操作

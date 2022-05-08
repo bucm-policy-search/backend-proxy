@@ -1,3 +1,9 @@
+# ignore dependencies
 node_modules
 
+# ignore TypeScript built files
+built/
+
+# ignore secrets
 .env
+**/*.crt
